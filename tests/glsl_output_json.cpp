@@ -513,6 +513,17 @@ static bool TestFile (glslopt_ctx* ctx, bool vertex,
 }
 
 
+// http://stackoverflow.com/questions/1494399/how-do-i-search-find-and-replace-in-a-standard-string
+void myReplace(std::string& str, const std::string& oldStr, const std::string& newStr)
+{
+	size_t pos = 0;
+	while((pos = str.find(oldStr, pos)) != std::string::npos)
+	{
+		str.replace(pos, oldStr.length(), newStr);
+		pos += newStr.length();
+	}
+}
+
 int main (int argc, const char** argv)
 {
 	if (argc < 2)
@@ -531,6 +542,13 @@ int main (int argc, const char** argv)
 	std::string baseFolder = argv[1];
 
 
+	// write file manifest
+	std::string manifest = baseFolder + "/manifest.txt";
+	FILE* fman = fopen (manifest.c_str(), "wb");
+	if (!fman)
+	{
+		printf ("\n  %s: can't write to optimized file!\n", manifest.c_str());
+	}
 
 
 	std::string testFolder = baseFolder + "/shaders";
@@ -552,64 +570,15 @@ int main (int argc, const char** argv)
 		{
 			++errors;
 		}
+
+		std::string ahref = "<a href=\"#\" onclick=\"LoadShaderFromJson('{0}.json');return false;\">{0}.json</a><br>\n";
+		std::string jline = ahref;
+		myReplace(jline, "{0}", hirname);
+		fwrite (jline.c_str(), 1, jline.size(), fman);
+
 	}
 
-
-
-#if 0
-	clock_t time0 = clock();
-
-	// 2.39s
-	// ralloc fix 256 initial: 1.35s
-
-	static const char* kTypeName[2] = { "vertex", "fragment" };
-	size_t tests = 0;
-	size_t errors = 0;
-	for (int type = 0; type < 2; ++type)
-	{
-		std::string testFolder = baseFolder + "/" + kTypeName[type];
-
-		static const char* kAPIName[3] = { "OpenGL ES 2.0", "OpenGL ES 3.0", "OpenGL" };
-		static const char* kApiIn [3] = {"-inES.txt", "-inES3.txt", "-in.txt"};
-		static const char* kApiIR [3] = {"-irES.txt", "-irES3.txt", "-ir.txt"};
-		static const char* kApiOut[3] = {"-outES.txt", "-outES3.txt", "-out.txt"};
-		for (int api = 0; api < 3; ++api)
-		{
-			printf ("\n** running %s tests for %s...\n", kTypeName[type], kAPIName[api]);
-			StringVector inputFiles = GetFiles (testFolder, kApiIn[api]);
-
-			size_t n = inputFiles.size();
-			for (size_t i = 0; i < n; ++i)
-			{
-				std::string inname = inputFiles[i];
-				//if (inname != "ast-in.txt")
-				//	continue;
-				std::string hirname = inname.substr (0,inname.size()-strlen(kApiIn[api])) + kApiIR[api];
-				std::string outname = inname.substr (0,inname.size()-strlen(kApiIn[api])) + kApiOut[api];
-				bool ok = TestFile (ctx[api], type==0, inname, testFolder + "/" + inname, testFolder + "/" + hirname, testFolder + "/" + outname, api<=1, hasOpenGL);
-				if (!ok)
-				{
-					++errors;
-				}
-				++tests;
-			}
-		}
-	}
-	clock_t time1 = clock();
-	float timeDelta = float(time1-time0)/CLOCKS_PER_SEC;
-
-	if (errors != 0)
-		printf ("\n**** %i tests (%.2fsec), %i !!!FAILED!!!\n", (int)tests, timeDelta, (int)errors);
-	else
-		printf ("\n**** %i tests (%.2fsec) succeeded\n", (int)tests, timeDelta);
-	
-	// 3.25s
-	// with builtin call linking, 3.84s
-#endif
-
-
-
-
+	fclose (fman);
 
 
 	for (int i = 0; i < 2; ++i)
