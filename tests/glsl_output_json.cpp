@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <iostream>
 #include <time.h>
 #include "../src/glsl/glsl_optimizer.h"
 
@@ -552,15 +553,17 @@ int main (int argc, const char** argv)
 
 
 	std::string testFolder = baseFolder + "/shaders";
-	const char* suffix = ".txt";
+	const char* suffix = "-in.txt";
 	StringVector inputFiles = GetFiles (testFolder, suffix);
 
 	
 	size_t errors = 0;
 	size_t n = inputFiles.size();
+	std::cout << "Compiling " << n << " sample files..." << std::endl;
 	for (size_t i = 0; i < n; ++i)
 	{
 		std::string inname = inputFiles[i];
+		std::cout << "  - " << inname << "...";
 		//if (inname != "ast-in.txt")
 		//	continue;
 		std::string hirname = inname.substr (0,inname.size()-strlen(suffix)) + "-hir.txt";
@@ -575,7 +578,7 @@ int main (int argc, const char** argv)
 		std::string jline = ahref;
 		myReplace(jline, "{0}", hirname);
 		fwrite (jline.c_str(), 1, jline.size(), fman);
-
+		std::cout << "done." << std::endl;
 	}
 
 	fclose (fman);
@@ -584,6 +587,11 @@ int main (int argc, const char** argv)
 	for (int i = 0; i < 2; ++i)
 		glslopt_cleanup (ctx[i]);
 	CleanupGL();
+	
+#ifdef _MSC_VER
+	// Prevent window from closing on finish
+	getchar();
+#endif
 
 	return errors ? 1 : 0;
 }
