@@ -4,6 +4,7 @@
 #include "glsl_parser.h"
 #include "ir_optimization.h"
 #include "ir_print_glsl_visitor.h"
+#include "ir_print_json_visitor.h"
 #include "ir_print_visitor.h"
 #include "ir_stats.h"
 #include "loop_analysis.h"
@@ -66,8 +67,7 @@ initialize_mesa_context(struct gl_context *ctx, glslopt_target api)
    ctx->Const.Program[MESA_SHADER_FRAGMENT].MaxTextureImageUnits = 16;
    ctx->Const.Program[MESA_SHADER_GEOMETRY].MaxTextureImageUnits = 16;
 
-   // For GLES2.0 this would be 1, but we do support GL_EXT_draw_buffers
-   ctx->Const.MaxDrawBuffers = 4;
+   ctx->Const.MaxDrawBuffers = (api == kGlslTargetOpenGLES20) ? 1 : 4;
 
    ctx->Driver.NewShader = _mesa_new_shader;
    ctx->Driver.DeleteShader = DeleteShader;
@@ -126,6 +126,7 @@ struct glslopt_shader
 	glslopt_shader ()
 		: rawOutput(0)
 		, optimizedOutput(0)
+		, jsonOutput(0)
 		, status(false)
 		, inputCount(0)
 		, statsMath(0)
@@ -155,6 +156,7 @@ struct glslopt_shader
 		ralloc_free(whole_program);
 		ralloc_free(rawOutput);
 		ralloc_free(optimizedOutput);
+		ralloc_free(jsonOutput);
 	}
 	
 	struct gl_shader_program* whole_program;
@@ -167,6 +169,7 @@ struct glslopt_shader
 
 	char*	rawOutput;
 	char*	optimizedOutput;
+	char*	jsonOutput;
 	const char*	infoLog;
 	bool	status;
 };
@@ -382,16 +385,19 @@ glslopt_shader* glslopt_optimize (glslopt_ctx* ctx, glslopt_shader_type type, co
 	glslopt_shader* shader = new (ctx->mem_ctx) glslopt_shader ();
 
 	PrintGlslMode printMode = kPrintGlslVertex;
+	PrintJsonMode printModej = kPrintJsonVertex;
 	switch (type) {
 	case kGlslOptShaderVertex:
 			shader->shader->Type = GL_VERTEX_SHADER;
 			shader->shader->Stage = MESA_SHADER_VERTEX;
 			printMode = kPrintGlslVertex;
+			printModej = kPrintJsonVertex;
 			break;
 	case kGlslOptShaderFragment:
 			shader->shader->Type = GL_FRAGMENT_SHADER;
 			shader->shader->Stage = MESA_SHADER_FRAGMENT;
 			printMode = kPrintGlslFragment;
+			printModej = kPrintJsonFragment;
 			break;
 	}
 	if (!shader->shader->Type)
@@ -469,6 +475,11 @@ glslopt_shader* glslopt_optimize (glslopt_ctx* ctx, glslopt_shader_type type, co
 		shader->optimizedOutput = _mesa_print_ir_glsl(ir, state, ralloc_strdup(shader, ""), printMode);
 	}
 
+	if (!state->error)
+	{
+		shader->jsonOutput = _mesa_print_json_glsl(ir, state, ralloc_strdup(shader, ""), printModej);
+	}
+
 	shader->status = !state->error;
 	shader->infoLog = state->info_log;
 
@@ -503,6 +514,11 @@ const char* glslopt_get_output (glslopt_shader* shader)
 const char* glslopt_get_raw_output (glslopt_shader* shader)
 {
 	return shader->rawOutput;
+}
+
+const char* glslopt_get_json_output (glslopt_shader* shader)
+{
+	return shader->jsonOutput;
 }
 
 const char* glslopt_get_log (glslopt_shader* shader)

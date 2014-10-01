@@ -51,6 +51,7 @@ glslopt_shader* glslopt_optimize (glslopt_ctx* ctx, glslopt_shader_type type, co
 bool glslopt_get_status (glslopt_shader* shader);
 const char* glslopt_get_output (glslopt_shader* shader);
 const char* glslopt_get_raw_output (glslopt_shader* shader);
+const char* glslopt_get_json_output (glslopt_shader* shader);
 const char* glslopt_get_log (glslopt_shader* shader);
 void glslopt_shader_delete (glslopt_shader* shader);
 

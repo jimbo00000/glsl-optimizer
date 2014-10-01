@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+# Visual C++ Express 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glsl_optimizer_lib", "glsl_optimizer_lib.vcxproj", "{B475A403-9D9B-410D-8A93-BA49FC4DD811}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glsl_optimizer_tests", "glsl_optimizer_tests.vcxproj", "{BB382242-6EBB-445F-989C-B9BA61D17965}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glsl_output_json", "glsl_output_json.vcxproj", "{E2DC7B8B-5329-4815-B27B-5173C71DEC2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,12 @@ Global
 		{BB382242-6EBB-445F-989C-B9BA61D17965}.Release|Win32.Build.0 = Release|Win32
 		{BB382242-6EBB-445F-989C-B9BA61D17965}.Release|x64.ActiveCfg = Release|x64
 		{BB382242-6EBB-445F-989C-B9BA61D17965}.Release|x64.Build.0 = Release|x64
+		{E2DC7B8B-5329-4815-B27B-5173C71DEC2D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E2DC7B8B-5329-4815-B27B-5173C71DEC2D}.Debug|Win32.Build.0 = Debug|Win32
+		{E2DC7B8B-5329-4815-B27B-5173C71DEC2D}.Debug|x64.ActiveCfg = Debug|Win32
+		{E2DC7B8B-5329-4815-B27B-5173C71DEC2D}.Release|Win32.ActiveCfg = Release|Win32
+		{E2DC7B8B-5329-4815-B27B-5173C71DEC2D}.Release|Win32.Build.0 = Release|Win32
+		{E2DC7B8B-5329-4815-B27B-5173C71DEC2D}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
