@@ -1,0 +1,25 @@
+{
+ "name": "void main",
+ "children": [
+  {"name": "float a", "size": 80},
+  {
+   "name": "if ((gl_FragCoord.x == 1.0))",
+   "children": [
+    {"name": "discard", "size": 20}
+   ]
+  },
+  {"name": "a = 4.0", "size": 110},
+  {"name": "for (...)", "size": 40},
+  {
+  "name": "while (true)", "size":90, 
+  "children": [
+    {"name": "a += 2.0", "size": 130},
+    {"name": "break", "size": 70}
+  ]
+  },
+  {"name": "float assignment_tmp", "size": 80},
+  {"name": "assignment_tmp = (a + 1.0)", "size": 110},
+  {"name": "float assignment_tmp", "size": 80}
+]
+}
+
