@@ -204,10 +204,11 @@ static bool CheckGLSL (bool vertex, bool gles, const std::string& testName, cons
 		return true;
 	#endif
 	
+	bool need3 = false;
 #	ifdef __APPLE__
 	// Mac core context does not accept any older shader versions, so need to switch to
 	// either legacy context or core one.
-	const bool need3 =
+	need3 =
 		(source.find("#version 150") != std::string::npos) ||
 		(source.find("#version 300") != std::string::npos);
 	if (need3)
