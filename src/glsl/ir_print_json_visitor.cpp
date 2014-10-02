@@ -509,7 +509,7 @@ void ir_print_json_visitor::visit(ir_variable *ir)
 		buffer.asprintf_append (" = ");
 		visit (ir->constant_value);
 	}
-    buffer.asprintf_append ("\", \"size\": 80},");
+    buffer.asprintf_append ("\", \"nodetype\": \"variable\", \"size\": 80},");
 }
 
 
