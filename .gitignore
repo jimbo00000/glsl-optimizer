@@ -76,3 +76,4 @@ glsl_compiler
 
 build
 html
+/contrib/d3/json/*.json
