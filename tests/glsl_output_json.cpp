@@ -547,12 +547,17 @@ int main (int argc, const char** argv)
 
 
 	// write file manifest
-	std::string manifest = baseFolder + "/manifest.txt";
+	std::string manifest = baseFolder + "/manifest.html";
 	FILE* fman = fopen (manifest.c_str(), "wb");
 	if (!fman)
 	{
 		printf ("\n  %s: can't write to optimized file!\n", manifest.c_str());
 	}
+	// Add html header to file
+	std::string htmlHeaderFile = baseFolder + "/shader_trees_header.html";
+	std::string htmlHeader;
+	ReadStringFromFile (htmlHeaderFile.c_str(), htmlHeader);
+	fwrite (htmlHeader.c_str(), 1, htmlHeader.size(), fman);
 
 	
 	std::string testFolder = baseFolder + "/shaders";
@@ -593,6 +598,12 @@ int main (int argc, const char** argv)
 		fwrite (jline.c_str(), 1, jline.size(), fman);
 		std::cout << "done." << std::endl;
 	}
+
+	// Add html footer to file
+	std::string htmlFooterFile = baseFolder + "/shader_trees_footer.html";
+	std::string htmlFooter;
+	ReadStringFromFile (htmlFooterFile.c_str(), htmlFooter);
+	fwrite (htmlFooter.c_str(), 1, htmlFooter.size(), fman);
 
 	fclose (fman);
 
