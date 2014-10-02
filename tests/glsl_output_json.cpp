@@ -410,6 +410,7 @@ static bool TestFile (glslopt_ctx* ctx, bool vertex,
 	const std::string& inputPath,
 	const std::string& hirPath,
 	const std::string& outputPath,
+	const std::string& outPath,
 	bool gles,
 	bool doCheckGLSL)
 {
@@ -453,7 +454,7 @@ static bool TestFile (glslopt_ctx* ctx, bool vertex,
 		textOpt += buffer;
 
 
-		std::string jsonPath = hirPath + ".json";
+		std::string jsonPath = outPath + "/" + testName + ".json";
 		{
 			// write output
 			FILE* f = fopen (jsonPath.c_str(), "wb");
@@ -469,6 +470,7 @@ static bool TestFile (glslopt_ctx* ctx, bool vertex,
 			res = false;
 		}
 
+#if 0
 		// write output
 		{
 			FILE* f = fopen (hirPath.c_str(), "wb");
@@ -501,6 +503,7 @@ static bool TestFile (glslopt_ctx* ctx, bool vertex,
 			res = false;
 		if (res && doCheckGLSL && !CheckGLSL (vertex, gles, testName, "optimized", textOpt.c_str()))
 			res = false;
+#endif
 	}
 	else
 	{
@@ -551,12 +554,12 @@ int main (int argc, const char** argv)
 		printf ("\n  %s: can't write to optimized file!\n", manifest.c_str());
 	}
 
-
+	
 	std::string testFolder = baseFolder + "/shaders";
+	std::string outFolder = baseFolder + "/json";
 	const char* suffix = "-in.txt";
 	StringVector inputFiles = GetFiles (testFolder, suffix);
 
-	
 	size_t errors = 0;
 	size_t n = inputFiles.size();
 	std::cout << "Compiling " << n << " sample files..." << std::endl;
@@ -568,15 +571,25 @@ int main (int argc, const char** argv)
 		//	continue;
 		std::string hirname = inname.substr (0,inname.size()-strlen(suffix)) + "-hir.txt";
 		std::string outname = inname.substr (0,inname.size()-strlen(suffix)) + "-out.txt";
-		bool ok = TestFile (ctx[0], false, inname, testFolder + "/" + inname, testFolder + "/" + hirname, testFolder + "/" + outname, false, hasOpenGL);
+		bool ok = TestFile (
+			ctx[0],
+			false,
+			inname,
+			testFolder + "/" + inname,
+			testFolder + "/" + hirname,
+			testFolder + "/" + outname,
+			outFolder,
+			false,
+			hasOpenGL);
 		if (!ok)
 		{
 			++errors;
 		}
 
-		std::string ahref = "<a href=\"#\" onclick=\"LoadShaderFromJson('{0}.json');return false;\">{0}.json</a><br>\n";
+		std::string jsonPath = "json/" + inname + ".json";
+		std::string ahref = "<a href=\"#\" onclick=\"LoadShaderFromJson('{0}');return false;\">{0}</a><br>\n";
 		std::string jline = ahref;
-		myReplace(jline, "{0}", hirname);
+		myReplace(jline, "{0}", jsonPath);
 		fwrite (jline.c_str(), 1, jline.size(), fman);
 		std::cout << "done." << std::endl;
 	}
