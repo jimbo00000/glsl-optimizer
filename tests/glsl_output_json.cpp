@@ -586,8 +586,8 @@ int main (int argc, const char** argv)
 			++errors;
 		}
 
-		std::string jsonPath = "json/" + inname + ".json";
-		std::string ahref = "<a href=\"#\" onclick=\"LoadShaderFromJson('{0}');return false;\">{0}</a><br>\n";
+		std::string jsonPath = inname + ".json";
+		std::string ahref = "<a href=\"#\" onclick=\"LoadShaderFromJson('json/{0}');return false;\">{0}</a><br>\n";
 		std::string jline = ahref;
 		myReplace(jline, "{0}", jsonPath);
 		fwrite (jline.c_str(), 1, jline.size(), fman);
