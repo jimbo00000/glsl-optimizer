@@ -82,18 +82,28 @@ public:
 		assert (m_Capacity >= m_Size);
 	}
 
-    // This ugly hack is to work around Json's intolerance for trailing
-    // commas in a list of objects. We write a comma and newline at the
-    // and of each node's line, and at the end of a children loop we call
-    // this to remove the last comma, then manually replace the newline.
-    void pop_last_two_chars()
-    {
-        assert (m_Ptr != NULL);
-        assert (m_Size > 1 );
-        --m_Size;
-        --m_Size;
-        asprintf_append("\n");
-    }
+	// This ugly hack is to work around Json's intolerance for trailing
+	// commas in a list of objects. We write a comma and newline at the
+	// and of each node's line, and at the end of a children loop we call
+	// this to remove the last comma, then manually replace the newline.
+	void pop_last_two_chars()
+	{
+		assert (m_Ptr != NULL);
+		assert (m_Size > 1 );
+		--m_Size;
+		--m_Size;
+		asprintf_append("\n");
+	}
+	void pop_last_comma()
+	{
+		assert (m_Ptr != NULL);
+		assert (m_Size > 1 );
+		while (*(m_Ptr + m_Size) != ',' && m_Size > 0)
+		{
+			--m_Size;
+		}
+		asprintf_append("\n");
+	}
 
 private:
 	char* m_Ptr;
@@ -1669,7 +1679,7 @@ ir_print_json_visitor::visit(ir_loop *ir)
 		end_statement_line();
 	}
     
-    buffer.pop_last_two_chars();
+    buffer.pop_last_comma();
 
 	indentation--;
 	indent();
