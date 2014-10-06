@@ -155,5 +155,8 @@ function color(d) {
   else if (d.nodetype == "discard") {
     return "#eeee00";
   }
+  else if (d.nodetype == "call") {
+    return "#ee00ee";
+  }
   return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
 }
