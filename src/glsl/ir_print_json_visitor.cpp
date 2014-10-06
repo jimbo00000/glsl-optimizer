@@ -293,13 +293,12 @@ _mesa_print_json_glsl(exec_list *instructions,
 			str.asprintf_append ("\n");
 	}
 
-    str.pop_last_two_chars();
-    str.asprintf_append ("  }");
+	str.pop_last_comma();
 
 	delete ls;
 
-    str.asprintf_append ("\n"); // optional
-    str.asprintf_append (" ]\n}\n");
+	str.asprintf_append ("\n"); // optional
+	str.asprintf_append (" ]\n}\n");
 
 	return ralloc_strdup(buffer, str.c_str());
 }
@@ -595,7 +594,7 @@ void ir_print_json_visitor::visit(ir_function_signature *ir)
    indent();
    buffer.asprintf_append ("]\n");
    indent();
-   buffer.asprintf_append ("}\n");
+   buffer.asprintf_append ("},\n");
 }
 
 void ir_print_json_visitor::visit(ir_function *ir)
