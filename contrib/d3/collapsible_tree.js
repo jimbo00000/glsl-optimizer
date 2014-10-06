@@ -146,5 +146,8 @@ function click(d) {
 }
 
 function color(d) {
+  if (d.nodetype == "variable") {
+    return "#cc0000";
+  }
   return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
 }
