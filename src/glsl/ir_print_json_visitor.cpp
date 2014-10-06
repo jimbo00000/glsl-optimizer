@@ -530,8 +530,9 @@ void ir_print_json_visitor::visit(ir_function_signature *ir)
    print_precision (ir, ir->return_type);
    print_type(buffer, ir->return_type, true);
    //buffer.asprintf_append (" %s (", ir->function_name());
-   buffer.asprintf_append (" %s\",", ir->function_name());
+   buffer.asprintf_append (" %s()\",", ir->function_name());
 
+#if 0
    if (!ir->parameters.is_empty())
    {
 	   buffer.asprintf_append ("\n");
@@ -558,6 +559,7 @@ void ir_print_json_visitor::visit(ir_function_signature *ir)
 	   buffer.asprintf_append (");\n");
 	   return;
    }
+#endif
    
    buffer.asprintf_append ("\n");
    indent();
