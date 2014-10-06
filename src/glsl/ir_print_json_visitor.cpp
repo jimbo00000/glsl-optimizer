@@ -1684,7 +1684,7 @@ ir_print_json_visitor::visit(ir_loop_jump *ir)
 {
    buffer.asprintf_append ("{\"name\": \"");
    buffer.asprintf_append ("%s", ir->is_break() ? "break" : "continue");
-   buffer.asprintf_append ("\", \"size\": 70},");
+   buffer.asprintf_append ("\", \"nodetype\": \"jump\", \"size\": 70},");
 }
 
 void

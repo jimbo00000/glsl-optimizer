@@ -147,6 +147,9 @@ function click(d) {
 
 function color(d) {
   if (d.nodetype == "variable") {
+    return "#00cc00";
+  }
+  else if (d.nodetype == "jump") {
     return "#cc0000";
   }
   return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
