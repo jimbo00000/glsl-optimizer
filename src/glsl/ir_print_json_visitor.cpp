@@ -1427,13 +1427,17 @@ ir_print_json_visitor::visit(ir_call *ir)
 void
 ir_print_json_visitor::visit(ir_return *ir)
 {
-   buffer.asprintf_append ("return");
+	indent();
+	buffer.asprintf_append ("{\"name\": \"");
+	buffer.asprintf_append ("return");
 
-   ir_rvalue *const value = ir->get_value();
-   if (value) {
-      buffer.asprintf_append (" ");
-      value->accept(this);
-   }
+	ir_rvalue *const value = ir->get_value();
+	if (value) {
+		buffer.asprintf_append (" ");
+		value->accept(this);
+	}
+
+	buffer.asprintf_append ("\", \"nodetype\": \"return\", \"size\": 82},");
 }
 
 
