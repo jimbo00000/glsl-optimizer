@@ -1399,6 +1399,9 @@ ir_print_json_visitor::visit(ir_call *ir)
 		buffer.asprintf_append ("//"); // for the ; that will follow (ugly, I know)
 		return;
 	}
+
+	indent();
+	buffer.asprintf_append ("{\"name\": \"");
 	
 	if (ir->return_deref)
 	{
@@ -1416,6 +1419,8 @@ ir_print_json_visitor::visit(ir_call *ir)
 	  first = false;
    }
    buffer.asprintf_append (")");
+
+	buffer.asprintf_append ("\", \"nodetype\": \"call\", \"size\": 81},");
 }
 
 
