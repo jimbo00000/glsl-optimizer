@@ -1425,7 +1425,7 @@ ir_print_json_visitor::visit(ir_return *ir)
 void
 ir_print_json_visitor::visit(ir_discard *ir)
 {
-    buffer.asprintf_append ("{\"name\": \"discard\", \"size\": 20},");
+    buffer.asprintf_append ("{\"name\": \"discard\", \"nodetype\": \"discard\", \"size\": 20},");
 
    if (ir->condition != NULL) {
       buffer.asprintf_append (" TODO ");

@@ -152,5 +152,8 @@ function color(d) {
   else if (d.nodetype == "jump") {
     return "#cc0000";
   }
+  else if (d.nodetype == "discard") {
+    return "#eeee00";
+  }
   return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
 }
