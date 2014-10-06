@@ -1491,6 +1491,8 @@ ir_print_json_visitor::visit(ir_if *ir)
 
 bool ir_print_json_visitor::can_emit_canonical_for (loop_variable_state *ls)
 {
+	return false;
+
 	if (ls == NULL)
 		return false;
 	
