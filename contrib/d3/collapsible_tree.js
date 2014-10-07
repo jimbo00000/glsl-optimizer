@@ -68,7 +68,7 @@ function update(source) {
   nodeEnter.append("rect")
       .attr("y", -barHeight / 2)
       .attr("height", barHeight)
-      .attr("width", barWidth)
+      .attr("width", getWidth)
       .style("fill", color)
       .on("click", click);
 
@@ -159,4 +159,23 @@ function color(d) {
     return "#ee00ee";
   }
   return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
+}
+
+function getWidth(d) {
+  if (d.nodetype == "variable") {
+    return 180;
+  }
+  else if (d.nodetype == "jump") {
+    return 90;
+  }
+  else if (d.nodetype == "discard") {
+    return 90;
+  }
+  else if (d.name == "Shader") { ///@todo nodetype=shader
+    return 90;
+  }
+  else if (d.name == "while (...)") { ///@todo nodetype=shader
+    return 90;
+  }
+  return barWidth;
 }
